@@ -183,17 +183,17 @@ public class TurnBaseStack {
             }
             
             if (botHP < 0) {
-                System.out.println("VICTORY! You Defeated the enemy");
+                System.out.println("\nVICTORY! You Defeated the enemy\n");
                 isDone = true;
                 s.nextLine();
             } else if (playerHP < 0) {
-                System.out.println("Defeat! You loss");
+                System.out.println("\nDefeat! You loss\n");
                 isDone = true;
                 s.nextLine();
             }
             
             while (isDone) {
-                System.out.println("Do you want to Continue? (y/n) : ");
+                System.out.print("Do you want to Continue? (y/n) : ");
                 String option = s.nextLine();
                 
                 if(option.equalsIgnoreCase("y")) {
