@@ -7,6 +7,7 @@ package com.mycompany.turnbasestack;
 import java.util.Stack;
 import java.util.Scanner;
 import java.util.Random;
+import java.util.Arrays;
 
 public class TurnBaseStack {
 
@@ -14,7 +15,7 @@ public class TurnBaseStack {
         Scanner s = new Scanner(System.in);
         Stack<Integer> lastHP = new Stack<>();
         
-        int[] damages = new int[5];
+        double[] damages = new double[5];
         
         int gameTimer = 1;
         boolean startGame = true;
@@ -29,12 +30,18 @@ public class TurnBaseStack {
         
         int randomDamage;
         int randomCrit;
+        int passiveCounter = 0;
         
         boolean isCrit = true;
         boolean isDone = false;
         boolean skip = false;
+        boolean isPassive = false;
         
         while (startGame) {
+            
+            for (double damage:damages) {
+                System.out.println(damage);
+            }
             
             lastHP.push(botHP);
             if (!skip) {
@@ -137,10 +144,19 @@ public class TurnBaseStack {
                     System.out.println("Enemy's passive is triggered, HP returns to previous state. Bot HP = " + botHP);
                 }
                 
+                isPassive = false;
                 botDMG = 10;
                 randomDamage = random.nextInt(5) + 1;
                 randomCrit = random.nextInt(3) + 1;
                 isCrit = random.nextBoolean();
+                double newBotDMG = 0;
+                
+                if (passiveCounter == 5) { 
+                    passiveCounter = 0;
+                    Arrays.fill(damages, 0);
+                    newBotDMG = playerPassive(damages, botDMG);
+                    isPassive = true;
+                }
                 
                 switch(randomDamage) {
                     
@@ -150,8 +166,21 @@ public class TurnBaseStack {
                             else if (randomCrit == 2) {botDMG *= 1.5;}
                             else if (randomCrit == 3) {botDMG *= 1.8;}
                             System.out.println("Critical Damage! Enemy's Damage is " + botDMG);
+                            
                         } else {
                             botDMG = botDMG;
+                        }
+                        
+                        
+                        damages[passiveCounter] = botDMG;
+                        if (isPassive) {
+                            botDMG = newBotDMG;
+                            System.out.println("Player's passive is activated");
+                            if (botDMG == 0) {
+                                System.out.println("Enemy's damage is deflected");
+                            } else {
+                                System.out.println("Enemy's damage is reduced by 25%");
+                            }
                         }
                         
                         playerHP -= botDMG;
@@ -168,6 +197,18 @@ public class TurnBaseStack {
                             botDMG = botDMG;
                         }
                         
+                        damages[passiveCounter] = botDMG;
+                        
+                        if (isPassive) {
+                            botDMG = newBotDMG;
+                            System.out.println("Player's passive is activated");
+                            if (botDMG == 0) {
+                                System.out.println("Enemy's damage is deflected");
+                            } else {
+                                System.out.println("Enemy's damage is reduced by 25%");
+                            }
+                        }
+                        
                         playerHP -= botDMG;
                         System.out.println("Enemy's Damage is " + botDMG);
                         break;
@@ -182,6 +223,18 @@ public class TurnBaseStack {
                             botDMG = botDMG;
                         }
                         
+                        damages[passiveCounter] = botDMG;
+                        
+                        if (isPassive) {
+                            botDMG = newBotDMG;
+                            System.out.println("Player's passive is activated");
+                            if (botDMG == 0) {
+                                System.out.println("Enemy's damage is deflected");
+                            } else {
+                                System.out.println("Enemy's damage is reduced by 25%");
+                            }
+                        }
+                        
                         playerHP -= botDMG;
                         System.out.println("Enemy's Damage is " + botDMG);
                         break;
@@ -191,8 +244,21 @@ public class TurnBaseStack {
                             if (randomCrit == 1) {botDMG *= 1.2;}
                             else if (randomCrit == 2) {botDMG *= 1.5;}
                             else if (randomCrit == 3) {botDMG *= 1.8;}
+                            System.out.println("Critical Damage! Enemy's Damage is " + botDMG);
                         } else {
                             botDMG = botDMG;
+                        }
+                        
+                        damages[passiveCounter] = botDMG;
+                        
+                        if (isPassive) {
+                            botDMG = newBotDMG;
+                            System.out.println("Player's passive is activated");
+                            if (botDMG == 0) {
+                                System.out.println("Enemy's damage is deflected");
+                            } else {
+                                System.out.println("Enemy's damage is reduced by 25%");
+                            }
                         }
                         
                         playerHP -= botDMG;
@@ -207,14 +273,28 @@ public class TurnBaseStack {
                             System.out.println("Critical Damage! Enemy's Damage is " + botDMG);
                         } else {
                             botDMG = botDMG;
-                            System.out.println("Enemy's Damage is " + botDMG);
+                        }
+                        damages[passiveCounter] = botDMG;
+                        
+                        if (isPassive) {
+                            botDMG = newBotDMG;
+                            System.out.println("Player's passive is activated");
+                            if (botDMG == 0) {
+                                System.out.println("Enemy's damage is deflected");
+                            } else {
+                                System.out.println("Enemy's damage is reduced by 25%");
+                            }
                         }
                         
                         playerHP -= botDMG;
+                        System.out.println("Enemy's Damage is " + botDMG);
                         break;
                 }
                 
+                passiveCounter++;
+                
             }
+            
             
             if (botHP < 0) {
                 System.out.println("\nVICTORY! You Defeated the enemy\n");
@@ -245,6 +325,23 @@ public class TurnBaseStack {
             
         }
         
+    }
+    
+    static double playerPassive(double[] damages, double botDMG) {
+        
+        double totalDamage = 0;
+        boolean isFullDeflect = false;
+        
+        for (double damage:damages) {
+            totalDamage += damage;
+        }
+        
+        if (totalDamage >= 50) {
+            botDMG = 0;
+        } else {
+            botDMG *= 0.75;
+        }
+        return botDMG;
     }
     
     static boolean isOddorEven(int i) {
