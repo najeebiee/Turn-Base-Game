@@ -13,6 +13,9 @@ public class TurnBaseStack {
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
         Stack<Integer> lastHP = new Stack<>();
+        
+        int[] damages = new int[5];
+        
         int gameTimer = 1;
         boolean startGame = true;
         Random random = new Random();
@@ -21,7 +24,7 @@ public class TurnBaseStack {
         double playerDMG = 10;
         double crit = 1;
         int energy = 95;
-        int botHP = 100;
+        int botHP = 200;
         double botDMG;
         
         int randomDamage;
@@ -34,14 +37,17 @@ public class TurnBaseStack {
         while (startGame) {
             
             lastHP.push(botHP);
-            
-            System.out.println("__________________________");
-            System.out.println("\nPlayer HP : " + playerHP);
-            System.out.println("Energy : " + (energy + 5));
-            System.out.println("Bot HP : " + botHP);
-            System.out.println("__________________________");
+            if (!skip) {
+                energy += 2;
+                System.out.println("__________________________");
+                System.out.println("\nPlayer HP : " + playerHP);
+                System.out.println("Energy : " + (energy));
+                System.out.println("Bot HP : " + botHP);
+                System.out.println("__________________________");
+            }
             
             gameTimer += 1;
+            
             if (isOddorEven(gameTimer)) {
                 lastHP.push(botHP);
                 int action;
@@ -60,34 +66,62 @@ public class TurnBaseStack {
                 switch(action) {
                     
                     case 1:
-                        botHP -= playerDMG * crit;
-                        energy -= 5;
-                        System.out.println("Your Damage is " + (playerDMG * crit));
-                        System.out.println("You used Tackle, Bot HP is " + botHP);
-                        skip = false;
+                        
+                        if (energy >= 5) {
+                            botHP -= playerDMG * crit;
+                            energy -= 5;
+                            System.out.println("Your Damage is " + (playerDMG * crit));
+                            System.out.println("You used Tackle, Bot HP is " + botHP);
+                            skip = false;
+                        } else {
+                            System.out.println("Insufficient Energy");
+                            skip = true;
+                        }
                         break;
+                       
                     case 2:
-                        botHP -= (playerDMG + 5) * crit;
-                        energy -= 10;
-                        System.out.println("Your Damage is " + ((playerDMG + 5)* crit));
-                        System.out.println("You used Thunderbolt, Bot HP is " + botHP);
-                        skip = false;
+                        
+                        if (energy >= 10) {
+                            botHP -= (playerDMG + 5) * crit;
+                            energy -= 10;
+                            System.out.println("Your Damage is " + ((playerDMG + 5)* crit));
+                            System.out.println("You used Thunderbolt, Bot HP is " + botHP);
+                            skip = false;
+                        } else {
+                            System.out.println("Insufficient Energy");
+                            skip = true;
+                        }
                         break;
+                        
                     case 3:
-                        botHP -= 0;
-                        energy -= 15;
-                        crit += 0.2;
-                        System.out.println("Your Damage is 0");
-                        System.out.println("You used Leer, next damage will be higher. Bot HP is " + botHP);
-                        skip = false;
+                        
+                        if (energy >= 15) {
+                             botHP -= 0;
+                            energy -= 15;
+                            crit += 0.2;
+                            System.out.println("Your Damage is 0");
+                            System.out.println("You used Leer, next damage will be higher. Bot HP is " + botHP);
+                            skip = false;
+                        } else {
+                            System.out.println("Insufficient Energy");
+                            skip = true;
+                        }
                         break;
+                        
                     case 4:
-                        botHP -= (playerDMG + 30) * crit;
-                        energy -= 40;
-                        System.out.println("Your Damage is " + ((playerDMG + 40) * crit));
-                        System.out.println("You used Hyper Beam, Bot HP is " + botHP);
-                        skip = false;
+                        
+                        if (energy >= 30) {
+                            botHP -= (playerDMG + 30) * crit;
+                            energy -= 30;
+                            System.out.println("Your Damage is " + ((playerDMG + 30) * crit));
+                            System.out.println("You used Hyper Beam, Bot HP is " + botHP);
+                            skip = false;
+                        } else {
+                            System.out.println("Insufficient Energy");
+                            skip = true;
+                        }
                         break;
+                        
                     case 5:
                         System.out.println("Invalid Input only 1 - 4");
                         skip = true;
