@@ -1,6 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
 
 package com.mycompany.turnbasestack;
 
@@ -14,6 +11,7 @@ public class TurnBaseStack {
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
         Stack<Integer> lastHP = new Stack<>();
+        Stack<String> jinguPassive = new Stack<>();
         
         double[] damages = new double[5];
         
@@ -31,11 +29,13 @@ public class TurnBaseStack {
         int randomDamage;
         int randomCrit;
         int passiveCounter = 0;
+        int jinguBuffLeft = 0;
         
         boolean isCrit = true;
         boolean isDone = false;
         boolean skip = false;
         boolean isPassive = false;
+        boolean JinguActive = false;
         
         while (startGame) {
             
@@ -152,12 +152,22 @@ public class TurnBaseStack {
                 double newBotDMG = 0;
                 
                 if (passiveCounter == 5) { 
+
                     passiveCounter = 0;
                     Arrays.fill(damages, 0);
                     newBotDMG = playerPassive(damages, botDMG);
                     isPassive = true;
+
+                } else if (botHP <= 30 && energy >= 35 && !bot_healed) {
+
+                    System.out.println("Bot uses Heal!");
+                    botHP += 50;
+                    if (botHP > bot_max_hp) botHP = bot_max_hp;
+                    energy -= 35;
+                    bot_healed = true;
+                    System.out.println("Bot healed to " + botHP + " HP and lost 35 energy.");
+                    
                 }
-                
                 switch(randomDamage) {
                     
                     case 1:
@@ -167,11 +177,8 @@ public class TurnBaseStack {
                             else if (randomCrit == 3) {botDMG *= 1.8;}
                             System.out.println("Critical Damage! Enemy's Damage is " + botDMG);
                             
-                        } else {
-                            botDMG = botDMG;
-                        }
-                        
-                        
+                        } 
+
                         damages[passiveCounter] = botDMG;
                         if (isPassive) {
                             botDMG = newBotDMG;
@@ -193,9 +200,7 @@ public class TurnBaseStack {
                             else if (randomCrit == 2) {botDMG *= 1.5;}
                             else if (randomCrit == 3) {botDMG *= 1.8;}
                             System.out.println("Critical Damage! Enemy's Damage is " + botDMG);
-                        } else {
-                            botDMG = botDMG;
-                        }
+                        } 
                         
                         damages[passiveCounter] = botDMG;
                         
@@ -219,9 +224,7 @@ public class TurnBaseStack {
                             else if (randomCrit == 2) {botDMG *= 1.5;}
                             else if (randomCrit == 3) {botDMG *= 1.8;}
                             System.out.println("Critical Damage! Enemy's Damage is " + botDMG);
-                        } else {
-                            botDMG = botDMG;
-                        }
+                        } 
                         
                         damages[passiveCounter] = botDMG;
                         
@@ -245,9 +248,7 @@ public class TurnBaseStack {
                             else if (randomCrit == 2) {botDMG *= 1.5;}
                             else if (randomCrit == 3) {botDMG *= 1.8;}
                             System.out.println("Critical Damage! Enemy's Damage is " + botDMG);
-                        } else {
-                            botDMG = botDMG;
-                        }
+                        } 
                         
                         damages[passiveCounter] = botDMG;
                         
@@ -271,9 +272,8 @@ public class TurnBaseStack {
                             else if (randomCrit == 2) {botDMG *= 1.5;}
                             else if (randomCrit == 3) {botDMG *= 1.8;}
                             System.out.println("Critical Damage! Enemy's Damage is " + botDMG);
-                        } else {
-                            botDMG = botDMG;
-                        }
+                        } 
+                        
                         damages[passiveCounter] = botDMG;
                         
                         if (isPassive) {
