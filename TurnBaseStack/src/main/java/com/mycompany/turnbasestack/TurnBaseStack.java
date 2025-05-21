@@ -24,6 +24,8 @@ public class TurnBaseStack {
         double crit = 1;
         int energy = 95;
         int botHP = 200;
+        boolean bot_healed = false;
+        int bot_max_hp = 200;
         double botDMG;
         
         int randomDamage;
