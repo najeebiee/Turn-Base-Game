@@ -41,10 +41,6 @@ public class TurnBaseStack {
         
         while (startGame) {
             
-            for (double damage:damages) {
-                System.out.println(damage);
-            }
-            
             lastHP.push(botHP);
             if (!skip) {
                 energy += 2;
