@@ -43,7 +43,7 @@ public class TurnBaseStack {
             
             lastHP.push(botHP);
             if (!skip) {
-                energy += 2;
+                energy += 5;
                 System.out.println("__________________________");
                 System.out.println("\nPlayer HP : " + playerHP);
                 System.out.println("Energy : " + (energy));
